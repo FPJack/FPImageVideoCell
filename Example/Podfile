@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '8.0'
+
+target 'FPImageVideoCell_Example' do
+  pod 'FPImageVideoCell', :path => '../'
+
+  target 'FPImageVideoCell_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
