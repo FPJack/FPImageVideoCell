@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0414074723B332040093D8A4 /* TestVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0414074523B332030093D8A4 /* TestVC.xib */; };
+		0414074823B332040093D8A4 /* TestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0414074623B332040093D8A4 /* TestVC.m */; };
+		0414074C23B33B190093D8A4 /* example.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 0414074B23B33B190093D8A4 /* example.mp4 */; };
 		110E5FF0B3DDD183FB8D344A /* Pods_FPImageVideoCell_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94B7C0971F6E475A565E268C /* Pods_FPImageVideoCell_Example.framework */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
@@ -37,10 +40,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0414074423B332030093D8A4 /* TestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestVC.h; sourceTree = "<group>"; };
+		0414074523B332030093D8A4 /* TestVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestVC.xib; sourceTree = "<group>"; };
+		0414074623B332040093D8A4 /* TestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestVC.m; sourceTree = "<group>"; };
+		0414074B23B33B190093D8A4 /* example.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = example.mp4; sourceTree = "<group>"; };
 		06B297AE07A9994315EC2676 /* Pods-FPImageVideoCell_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FPImageVideoCell_Tests.debug.xcconfig"; path = "Target Support Files/Pods-FPImageVideoCell_Tests/Pods-FPImageVideoCell_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		34F39BEF58DA1D9A978840F8 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		34F39BEF58DA1D9A978840F8 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		479647B577541CE94B5E3A2C /* Pods-FPImageVideoCell_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FPImageVideoCell_Example.release.xcconfig"; path = "Target Support Files/Pods-FPImageVideoCell_Example/Pods-FPImageVideoCell_Example.release.xcconfig"; sourceTree = "<group>"; };
-		4F8B8BF9068F3BB25C0E2ABC /* FPImageVideoCell.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = FPImageVideoCell.podspec; path = ../FPImageVideoCell.podspec; sourceTree = "<group>"; };
+		4F8B8BF9068F3BB25C0E2ABC /* FPImageVideoCell.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = FPImageVideoCell.podspec; path = ../FPImageVideoCell.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		5444F06D2E34D8283555F145 /* Pods-FPImageVideoCell_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FPImageVideoCell_Example.debug.xcconfig"; path = "Target Support Files/Pods-FPImageVideoCell_Example/Pods-FPImageVideoCell_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* FPImageVideoCell_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FPImageVideoCell_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -66,7 +73,7 @@
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		94B7C0971F6E475A565E268C /* Pods_FPImageVideoCell_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FPImageVideoCell_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDA6F0DA806CBB7DB0BD4873 /* Pods-FPImageVideoCell_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FPImageVideoCell_Tests.release.xcconfig"; path = "Target Support Files/Pods-FPImageVideoCell_Tests/Pods-FPImageVideoCell_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		F44C759F912006D68014404B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		F44C759F912006D68014404B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,12 +139,16 @@
 		6003F593195388D20070C39A /* Example for FPImageVideoCell */ = {
 			isa = PBXGroup;
 			children = (
+				0414074B23B33B190093D8A4 /* example.mp4 */,
 				6003F59C195388D20070C39A /* FPAppDelegate.h */,
 				6003F59D195388D20070C39A /* FPAppDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A5195388D20070C39A /* FPViewController.h */,
 				6003F5A6195388D20070C39A /* FPViewController.m */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
+				0414074423B332030093D8A4 /* TestVC.h */,
+				0414074623B332040093D8A4 /* TestVC.m */,
+				0414074523B332030093D8A4 /* TestVC.xib */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
 			);
@@ -193,7 +204,6 @@
 				06B297AE07A9994315EC2676 /* Pods-FPImageVideoCell_Tests.debug.xcconfig */,
 				BDA6F0DA806CBB7DB0BD4873 /* Pods-FPImageVideoCell_Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -248,6 +258,9 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = FPJack;
 				TargetAttributes = {
+					6003F589195388D20070C39A = {
+						DevelopmentTeam = MSL77HGY8X;
+					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
 					};
@@ -258,6 +271,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -277,8 +291,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0414074C23B33B190093D8A4 /* example.mp4 in Resources */,
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
+				0414074723B332040093D8A4 /* TestVC.xib in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 			);
@@ -347,10 +363,24 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-FPImageVideoCell_Example/Pods-FPImageVideoCell_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/FPImageVideoCell/FPImageVideoCell.framework",
+				"${BUILT_PRODUCTS_DIR}/FPPermission/FPPermission.framework",
+				"${BUILT_PRODUCTS_DIR}/LCActionSheet/LCActionSheet.framework",
+				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/TZImagePickerController/TZImagePickerController.framework",
+				"${BUILT_PRODUCTS_DIR}/YBImageBrowser/YBImageBrowser.framework",
+				"${BUILT_PRODUCTS_DIR}/YYImage/YYImage.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FPImageVideoCell.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FPPermission.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LCActionSheet.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TZImagePickerController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YBImageBrowser.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYImage.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -364,6 +394,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0414074823B332040093D8A4 /* TestVC.m in Sources */,
 				6003F59E195388D20070C39A /* FPAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* FPViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
@@ -494,11 +525,13 @@
 			baseConfigurationReference = 5444F06D2E34D8283555F145 /* Pods-FPImageVideoCell_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = MSL77HGY8X;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FPImageVideoCell/FPImageVideoCell-Prefix.pch";
 				INFOPLIST_FILE = "FPImageVideoCell/FPImageVideoCell-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.zhichongjia.ZhiChongRadar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				WRAPPER_EXTENSION = app;
@@ -510,11 +543,13 @@
 			baseConfigurationReference = 479647B577541CE94B5E3A2C /* Pods-FPImageVideoCell_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = MSL77HGY8X;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FPImageVideoCell/FPImageVideoCell-Prefix.pch";
 				INFOPLIST_FILE = "FPImageVideoCell/FPImageVideoCell-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.zhichongjia.ZhiChongRadar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				WRAPPER_EXTENSION = app;

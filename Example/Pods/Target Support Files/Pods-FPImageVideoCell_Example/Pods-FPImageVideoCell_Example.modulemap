@@ -1,0 +1,6 @@
+framework module Pods_FPImageVideoCell_Example {
+  umbrella header "Pods-FPImageVideoCell_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}

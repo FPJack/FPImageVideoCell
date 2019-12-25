@@ -1,0 +1,6 @@
+framework module FPImageVideoCell {
+  umbrella header "FPImageVideoCell-umbrella.h"
+
+  export *
+  module * { export * }
+}

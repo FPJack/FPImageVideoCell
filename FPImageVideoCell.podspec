@@ -30,13 +30,19 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '8.0'
 
-  s.source_files = 'FPImageVideoCell/Classes/**/*'
+  s.source_files = 'FPImageVideoCell/Classes/**/*.{h,m}'
   
-  # s.resource_bundles = {
-  #   'FPImageVideoCell' => ['FPImageVideoCell/Assets/*.png']
-  # }
+   s.resource_bundles = {
+     'FPImageVideoCell' => ['FPImageVideoCell/Assets/*.png','FPImageVideoCell/Assets/*.xib']
+   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+   s.dependency 'TZImagePickerController'
+   s.dependency 'YBImageBrowser'
+   s.dependency 'FPPermission'
+   s.dependency 'LCActionSheet'
+
+
+
 end

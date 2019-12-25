@@ -1,0 +1,53 @@
+PODS:
+  - FPImageVideoCell (0.1.0):
+    - FPPermission
+    - LCActionSheet
+    - TZImagePickerController
+    - YBImageBrowser
+  - FPPermission (0.1.0)
+  - LCActionSheet (3.5.4):
+    - Masonry (~> 1.1.0)
+  - Masonry (1.1.0)
+  - SDWebImage (5.4.0):
+    - SDWebImage/Core (= 5.4.0)
+  - SDWebImage/Core (5.4.0)
+  - TZImagePickerController (3.2.9)
+  - YBImageBrowser (3.0.8):
+    - YBImageBrowser/Core (= 3.0.8)
+  - YBImageBrowser/Core (3.0.8):
+    - SDWebImage (>= 5.0.0)
+    - YYImage
+  - YYImage (1.0.4):
+    - YYImage/Core (= 1.0.4)
+  - YYImage/Core (1.0.4)
+
+DEPENDENCIES:
+  - FPImageVideoCell (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - FPPermission
+    - LCActionSheet
+    - Masonry
+    - SDWebImage
+    - TZImagePickerController
+    - YBImageBrowser
+    - YYImage
+
+EXTERNAL SOURCES:
+  FPImageVideoCell:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  FPImageVideoCell: 9012aed36fdeb5ffd44ed34430f088a512d537b7
+  FPPermission: cdfb348be8406c9649a6fb1db1aca760632d3524
+  LCActionSheet: a015dee43c54c8f6631e86facd9e2ad59dc1b5ab
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  SDWebImage: 5bf6aec6481ae2a062bdc59f9d6c1d1e552090e0
+  TZImagePickerController: 1f92968aa0e98a06b9e2eccca8560acc19254257
+  YBImageBrowser: ecb5b8b51c9c6e1e1f97d33ab94ad88097b200b3
+  YYImage: 1e1b62a9997399593e4b9c4ecfbbabbf1d3f3b54
+
+PODFILE CHECKSUM: 1f82c6fbbaadacc0925f5f40543d165509eeb299
+
+COCOAPODS: 1.9.0.beta.2
