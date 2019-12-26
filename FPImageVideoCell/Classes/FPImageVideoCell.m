@@ -17,15 +17,7 @@ static void *contentSizeContext = &contentSizeContext;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @end
 @implementation FPImageVideoCell
-- (NSBundle*)bundle{
-    if (!_bundle) {
-        NSBundle * bundle = [NSBundle bundleForClass:[FPImageVideoCell class]];
-        NSURL * url = [bundle URLForResource:@"FPImageVideoCell" withExtension:@"bundle"];
-        if (url) bundle =  [NSBundle bundleWithURL:url];
-        _bundle = bundle;
-    }
-    return _bundle;
-}
+- (NSBundle*)bundle{return [FPImageVideoCell fpSourceBundle];}
 - (NSTimeInterval)maxVideoDurtaion{return _maxVideoDurtaion <= 0 ? 60 : _maxVideoDurtaion;}
 - (void)setType:(FPImageType)type{
     _type = type;
@@ -570,12 +562,22 @@ static void *contentSizeContext = &contentSizeContext;
     return CGSizeMake(self.bounds.size.width, self.footerHeight);
 }
 + (void)registerNibFromTableView:(UITableView*)tableView{
-    NSBundle * bundle = [NSBundle bundleForClass:[FPImageVideoCell class]];
-    NSURL * url = [bundle URLForResource:@"FPImageVideoCell" withExtension:@"bundle"];
-    if (url) bundle =  [NSBundle bundleWithURL:url];
-    [tableView registerNib:[UINib nibWithNibName:@"FPImageVideoCell" bundle:bundle] forCellReuseIdentifier:@"FPImageVideoCell"];
+    [tableView registerNib:[UINib nibWithNibName:@"FPImageVideoCell" bundle:[FPImageVideoCell fpSourceBundle]] forCellReuseIdentifier:@"FPImageVideoCell"];
 }
 + (FPImageVideoCell*)dequeueReusableCellFromTableView:(UITableView*)tableView indexPath:(NSIndexPath*)indexPath{
     return [tableView dequeueReusableCellWithIdentifier:@"FPImageVideoCell" forIndexPath:indexPath];
+}
++ (instancetype)loadVideoCellFromXib{
+    return [[self fpSourceBundle] loadNibNamed:@"FPImageVideoCell" owner:nil options:nil].firstObject;
+}
++ (NSBundle*)fpSourceBundle{
+    static NSBundle *bundle;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        bundle = [NSBundle bundleForClass:[FPImageVideoCell class]];
+        NSURL * url = [bundle URLForResource:@"FPImageVideoCell" withExtension:@"bundle"];
+        if (url) bundle =  [NSBundle bundleWithURL:url];
+    });
+    return bundle;
 }
 @end

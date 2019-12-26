@@ -59,20 +59,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 //Observer Block
 @property (nonatomic,copy)void (^heightChangeBlock)(CGFloat height,NSArray *source);
-@property (nonatomic,copy)void (^addSourceBlock)(NSArray* addSource,NSArray *source);
 @property (nonatomic,copy)void (^deleteSourceBlock)(NSArray* deleteSource,NSArray *source);
 
 //custom tap event
 @property (nonatomic,copy)void (^tapAddSourceBlock)(FPImageType type,NSInteger leaveImageMaxCount,NSInteger leaveVideoMaxCount,void(^callBackBlock)(NSArray <UIImage *>  * _Nullable images,NSArray <PHAsset *> * _Nullable assets));
-
-
-//@property (nonatomic,copy)void (^tapAddSourceBlock)(FPImageType type,NSIndexPath* indexPath);
 @property (nonatomic,copy)void (^tapImageBlock)(id obj,UICollectionViewCell *cell);
 @property (nonatomic,copy)void (^tapVideoBlock)(FPVideoItem * item,UICollectionViewCell *cell);
-
 @property (nonatomic,assign)FPImageType type;
-
 //Nib注册Cell
++ (instancetype)loadVideoCellFromXib;
 + (void)registerNibFromTableView:(UITableView*)tableView;
 + (FPImageVideoCell*)dequeueReusableCellFromTableView:(UITableView*)tableView indexPath:(NSIndexPath*)indexPath;
 @end

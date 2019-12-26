@@ -4,12 +4,12 @@ platform :ios, '9.0'
 
 target 'FPImageVideoCell_Example' do
   pod 'FPImageVideoCell', :path => '../'
+  pod 'TZImagePickerController'
+  pod 'FPPermission'
+  pod 'LCActionSheet'
 
   target 'FPImageVideoCell_Tests' do
     inherit! :search_paths
-    pod 'TZImagePickerController'
-    pod 'FPPermission'
-    pod 'LCActionSheet'
 
   end
 end
