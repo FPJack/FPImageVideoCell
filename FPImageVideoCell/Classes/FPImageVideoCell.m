@@ -439,6 +439,7 @@ static void *contentSizeContext = &contentSizeContext;
                             item.videoUrl = urlAsset.URL;
                             item.pixelWidth = pAsset.pixelWidth;
                             item.pixelHeight = pAsset.pixelHeight;
+                            item.asset = pAsset;
                             [videoItems addObject:item];
                             dispatch_group_leave(dispatchGroup);
                         }];
