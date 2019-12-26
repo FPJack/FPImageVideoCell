@@ -45,8 +45,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign)CGSize itemSize;
 //选择视频时当maxVideoCount=1的时候，是否自动计算视频的尺寸
 @property (nonatomic,assign)BOOL automaticConfiureVideoSize;
-@property (nonatomic,assign)BOOL allowsEditingImage;//拍摄图片是否允许编辑
-@property (nonatomic,assign)BOOL allowsEditingVideo;//拍摄视频是否允许编辑
 @property (nonatomic,assign)CGFloat cellHeight;//实际高度 布局完之后才有值
 @property (nonatomic,strong)NSMutableArray *source;//UIImage Or Url  Or FPVideoItem
 
@@ -68,8 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign)FPImageType type;
 //Nib注册Cell
 + (NSBundle*)fpSourceBundle;
-+ (instancetype)loadVideoCellFromXib;
-+ (void)registerNibFromTableView:(UITableView*)tableView;
++ (void)registerClassFromTableView:(UITableView*)tableView;
 + (FPImageVideoCell*)dequeueReusableCellFromTableView:(UITableView*)tableView indexPath:(NSIndexPath*)indexPath;
 @end
 NS_ASSUME_NONNULL_END

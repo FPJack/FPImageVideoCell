@@ -11,12 +11,45 @@
 #import <AVKit/AVKit.h>
 static void *contentSizeContext = &contentSizeContext;
 @interface FPImageVideoCell()<UICollectionViewDelegateFlowLayout,UICollectionViewDelegate,UICollectionViewDataSource>
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightCon;
 @property (nonatomic,assign)FPImageType interType;
 @property (nonatomic,strong)NSBundle *bundle;
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (strong, nonatomic)UICollectionView *collectionView;
+@property (nonatomic,strong)NSLayoutConstraint *heightConstraint;
 @end
 @implementation FPImageVideoCell
+- (UICollectionView *)collectionView{
+    if (!_collectionView) {
+        _collectionView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:[UICollectionViewFlowLayout new]];
+        _collectionView.delegate = self;
+        _collectionView.dataSource = self;
+        _collectionView.backgroundColor = [UIColor whiteColor];
+    }
+    return _collectionView;
+}
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        [self.collectionView registerNib:[UINib nibWithNibName:@"FPImageResuableView" bundle:self.bundle] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"FPImageResuableView"];
+        [self.collectionView registerNib:[UINib nibWithNibName:@"FPImageResuableView" bundle:self.bundle] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FPImageResuableView"];
+        [self.collectionView registerNib:[UINib nibWithNibName:@"FPImageCCell" bundle:self.bundle] forCellWithReuseIdentifier:@"FPImageCCell"];
+        [self.collectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:contentSizeContext];
+        self.source = [NSMutableArray array];
+        self.minimumInteritemSpacing = 10;
+        self.minimumLineSpacing = 10;
+        self.maxVideoCount = 1;
+        self.maxImageCount = 9;
+        [self.contentView addSubview:self.collectionView];
+        [self.collectionView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.collectionView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0];
+        NSLayoutConstraint *constraint2 = [NSLayoutConstraint constraintWithItem:self.collectionView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0];
+        NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.collectionView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0];
+        NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.collectionView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
+        NSLayoutConstraint *constraint5 = [NSLayoutConstraint constraintWithItem:self.collectionView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:0];
+        self.heightConstraint = constraint5;
+        [self.contentView addConstraints:@[constraint1,constraint2,constraint3,constraint4,constraint5]];
+    }
+    return self;
+}
 - (NSBundle*)bundle{return [FPImageVideoCell fpSourceBundle];}
 - (NSTimeInterval)maxVideoDurtaion{return _maxVideoDurtaion <= 0 ? 60 : _maxVideoDurtaion;}
 - (void)setType:(FPImageType)type{
@@ -55,7 +88,7 @@ static void *contentSizeContext = &contentSizeContext;
         UITableView *tableView = (UITableView*)superView;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [tableView beginUpdates];
-            self.heightCon.constant = self.cellHeight;
+            self.heightConstraint.constant = self.cellHeight;
             [tableView endUpdates];
         });
     }
@@ -87,17 +120,6 @@ static void *contentSizeContext = &contentSizeContext;
 }
 - (void)awakeFromNib {
     [super awakeFromNib];
-    [self.collectionView registerNib:[UINib nibWithNibName:@"FPImageResuableView" bundle:self.bundle] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"FPImageResuableView"];
-    [self.collectionView registerNib:[UINib nibWithNibName:@"FPImageResuableView" bundle:self.bundle] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FPImageResuableView"];
-    [self.collectionView registerNib:[UINib nibWithNibName:@"FPImageCCell" bundle:self.bundle] forCellWithReuseIdentifier:@"FPImageCCell"];
-    [self.collectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:contentSizeContext];
-    self.source = [NSMutableArray array];
-    self.minimumInteritemSpacing = 10;
-    self.minimumLineSpacing = 10;
-    self.maxVideoCount = 1;
-    self.maxImageCount = 9;
-    self.collectionView.delegate = self;
-    self.collectionView.dataSource = self;
 }
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -349,71 +371,25 @@ static void *contentSizeContext = &contentSizeContext;
         FPImageType type = FPImageTypeSelectImage;
         NSInteger imageMaxCount = MIN(self.maxAllCount - self.source.count, self.maxImageCount - imageSource.count);
         NSInteger videoMaxCount = MIN(self.maxAllCount - self.source.count, self.maxVideoCount - videoSource.count);
-//        FPChooesConfiure *configure = [FPChooesConfiure new];
-//        configure.maxVideoDurtaion = self.maxVideoDurtaion;;
-//        configure.allowEditImage = self.allowsEditingImage;
-//        configure.allowEditVideo = self.allowsEditingVideo;
-//
-//        configure.maxImageCount = imageMaxCount;
         if (self.interType == FPImageTypeSelectImage) {
-//            configure.type = AlertTypeTakePAndChooesP;
             type = FPImageTypeSelectImage;
         }else if (self.interType == FPImageTypeSelectVideo){
-//            configure.type = AlertTypeTakeVAndChooesV;
             type = FPImageTypeSelectVideo;
         }else if (self.interType == FPImageTypeSelectImageOrVideo){
-//            configure.type = AlertTypeTakePVAndChooesPV;
             type = FPImageTypeSelectImageOrVideo;
         }else if (self.interType == FPImageTypeSelectImageAndVideo){
-//            configure.type = AlertTypeTakePVAndChooesPV;
             type = FPImageTypeSelectImageAndVideo;
             if (self.maxVideoCount > 0) {
                 if (videoSource.count >= self.maxVideoCount) {
-//                    configure.type = AlertTypeTakePAndChooesP;
                     type = FPImageTypeSelectImage;
                 }
             }
             if (self.maxImageCount > 0){
                 if (imageSource.count >= self.maxImageCount) {
-//                    configure.type = AlertTypeTakeVAndChooesV;
                     type = FPImageTypeSelectVideo;
                 }
             }
         }
-//        configure.didFinishTakeVideoHandle = ^(UIImage * _Nonnull coverImage, PHAsset * _Nonnull pAsset, NSError * _Nonnull error) {
-//            if (weakSelf.type == FPImageTypeSelectImageOrVideo){
-//                weakSelf.interType = FPImageTypeSelectVideo;
-//            }
-//            PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
-//            options.version = PHImageRequestOptionsVersionCurrent;
-//            options.deliveryMode = PHVideoRequestOptionsDeliveryModeAutomatic;
-//            [[PHImageManager defaultManager] requestAVAssetForVideo:pAsset options:options resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
-//                AVURLAsset *urlAsset = (AVURLAsset *)asset;
-//                FPVideoItem *item = [FPVideoItem new];
-//                item.coverImage = coverImage;
-//                item.videoUrl = urlAsset.URL;
-//                item.pixelWidth = pAsset.pixelWidth;
-//                item.pixelHeight = pAsset.pixelHeight;
-//                NSMutableArray *newSource = [NSMutableArray arrayWithArray:weakSelf.source];
-//                [newSource addObject:item];
-//                weakSelf.source = newSource;
-//                if (weakSelf.addSourceBlock) weakSelf.addSourceBlock(@[item], weakSelf.source);
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [weakSelf.collectionView reloadData];
-//                });
-//            }];
-//        };
-//        configure.didFinishTakePhotosHandle = ^(NSArray<UIImage *> * _Nonnull images, NSError * _Nonnull error) {
-//            if (weakSelf.type == FPImageTypeSelectImageOrVideo){
-//                weakSelf.interType = FPImageTypeSelectImage;
-//            }
-//            NSMutableArray *newSource = [NSMutableArray arrayWithArray:weakSelf.source];
-//            [newSource addObjectsFromArray:images];
-//            weakSelf.source = newSource;
-//            if (weakSelf.addSourceBlock) weakSelf.addSourceBlock(images, weakSelf.source);
-//            [weakSelf.collectionView reloadData];
-//        };
-        //        [FPChooesImageHelper chooesImageOrVideoConfiure:configure fromVC:nil];
         if (self.tapAddSourceBlock) {
             self.tapAddSourceBlock(type, imageMaxCount,videoMaxCount, ^(NSArray<UIImage *> * _Nonnull images, NSArray<PHAsset *> * _Nonnull assets) {
                 if (weakSelf.type == FPImageTypeSelectImageOrVideo && images.count > 0){
@@ -561,14 +537,11 @@ static void *contentSizeContext = &contentSizeContext;
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section{
     return CGSizeMake(self.bounds.size.width, self.footerHeight);
 }
-+ (void)registerNibFromTableView:(UITableView*)tableView{
-    [tableView registerNib:[UINib nibWithNibName:@"FPImageVideoCell" bundle:[FPImageVideoCell fpSourceBundle]] forCellReuseIdentifier:@"FPImageVideoCell"];
++ (void)registerClassFromTableView:(UITableView*)tableView{
+    [tableView registerClass:[FPImageVideoCell class] forCellReuseIdentifier:@"FPImageVideoCell"];
 }
 + (FPImageVideoCell*)dequeueReusableCellFromTableView:(UITableView*)tableView indexPath:(NSIndexPath*)indexPath{
     return [tableView dequeueReusableCellWithIdentifier:@"FPImageVideoCell" forIndexPath:indexPath];
-}
-+ (instancetype)loadVideoCellFromXib{
-    return [[self fpSourceBundle] loadNibNamed:@"FPImageVideoCell" owner:nil options:nil].firstObject;
 }
 + (NSBundle*)fpSourceBundle{
     static NSBundle *bundle;

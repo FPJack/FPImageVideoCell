@@ -28,7 +28,12 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
-    [FPImageVideoCell registerNibFromTableView:self.tableView];
+    FPImageCCell *cell = [[FPImageCCell alloc] initWithFrame:CGRectZero];
+    FPImageCCell *cell1 = [[FPImageCCell alloc] init];
+    
+    [FPImageVideoCell registerClassFromTableView:self.tableView];
+//    [FPImageVideoCell registerNibFromTableView:self.tableView];
+    
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 1;
@@ -36,7 +41,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     FPImageVideoCell *cell = [FPImageVideoCell dequeueReusableCellFromTableView:tableView indexPath:indexPath];
     cell.type = self.type;
-    cell.allowsEditingImage = YES;
     cell.headerHeight = 50;
    //cell.footerHeight = 50;
     cell.headerTitle = @"选择图片";
