@@ -7,7 +7,6 @@
 //
 #import "FPImageVideoCell.h"
 #import <SDWebImage/SDWebImage.h>
-#import "FPChooesImageHelper.h"
 #import <YBImageBrowser/YBImageBrowser.h>
 #import <AVKit/AVKit.h>
 static void *contentSizeContext = &contentSizeContext;
@@ -36,13 +35,13 @@ static void *contentSizeContext = &contentSizeContext;
     if (_maxAllCount == 0) return self.maxImageCount + self.maxVideoCount;
     NSInteger min =  MIN(self.maxImageCount, self.maxVideoCount);
     NSInteger max =  self.maxVideoCount + self.maxImageCount;
-      if (_maxAllCount >= max) {
-          return max;
-      }else if (_maxAllCount <= min){
-          return min;
-      }else{
-          return _maxAllCount;
-      }
+    if (_maxAllCount >= max) {
+        return max;
+    }else if (_maxAllCount <= min){
+        return min;
+    }else{
+        return _maxAllCount;
+    }
 }
 - (NSMutableArray *)imageSource{
     NSMutableArray *arr = [NSMutableArray array];
@@ -129,12 +128,12 @@ static void *contentSizeContext = &contentSizeContext;
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     //过滤与类型不一致的数据
     [_source enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-         if (self.interType == FPImageTypeSelectImage || self.interType == FPImageTypeShowImage) {
-             if ([obj isKindOfClass:[FPVideoItem class]]) [_source removeObjectAtIndex:idx];
-         }else if (self.interType == FPImageTypeSelectVideo || self.interType == FPImageTypeShowVideo){
-             if (![obj isKindOfClass:[FPVideoItem class]]) [_source removeObjectAtIndex:idx];
-         }
-     }];
+        if (self.interType == FPImageTypeSelectImage || self.interType == FPImageTypeShowImage) {
+            if ([obj isKindOfClass:[FPVideoItem class]]) [_source removeObjectAtIndex:idx];
+        }else if (self.interType == FPImageTypeSelectVideo || self.interType == FPImageTypeShowVideo){
+            if (![obj isKindOfClass:[FPVideoItem class]]) [_source removeObjectAtIndex:idx];
+        }
+    }];
     
     if (self.interType == FPImageTypeShowImage) {
         return self.source.count > self.maxImageCount ? self.maxImageCount : self.source.count;
@@ -352,67 +351,121 @@ static void *contentSizeContext = &contentSizeContext;
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.item >= self.source.count) {//添加
-        if (self.tapAddSourceBlock) {
-            self.tapAddSourceBlock(self.interType, indexPath);
-            return;
-        }
         __weak typeof(self) weakSelf = self;
         NSArray *imageSource = self.imageSource;
         NSArray *videoSource = self.videoSource;
-        FPChooesConfiure *configure = [FPChooesConfiure new];
-        configure.maxVideoDurtaion = self.maxVideoDurtaion;;
-        configure.allowEditImage = self.allowsEditingImage;
-        configure.allowEditVideo = self.allowsEditingVideo;
-        configure.maxImageCount = MIN(self.maxAllCount - self.source.count, self.maxImageCount - imageSource.count);
+        FPImageType type = FPImageTypeSelectImage;
+        NSInteger imageMaxCount = 0;
+        NSInteger videoMaxCount = 0;
+
+//        FPChooesConfiure *configure = [FPChooesConfiure new];
+//        configure.maxVideoDurtaion = self.maxVideoDurtaion;;
+//        configure.allowEditImage = self.allowsEditingImage;
+//        configure.allowEditVideo = self.allowsEditingVideo;
+//        imageMaxCount = MIN(self.maxAllCount - self.source.count, self.maxImageCount - imageSource.count);
+//        videoMaxCount = MIN(self.maxAllCount - self.source.count, self.maxVideoCount - imageSource.count);
+//
+//        configure.maxImageCount = imageMaxCount;
         if (self.interType == FPImageTypeSelectImage) {
-            configure.type = AlertTypeTakePAndChooesP;
+//            configure.type = AlertTypeTakePAndChooesP;
+            type = FPImageTypeSelectImage;
         }else if (self.interType == FPImageTypeSelectVideo){
-            configure.type = AlertTypeTakeVAndChooesV;
+//            configure.type = AlertTypeTakeVAndChooesV;
+            type = FPImageTypeSelectVideo;
         }else if (self.interType == FPImageTypeSelectImageOrVideo){
-            configure.type = AlertTypeTakePVAndChooesPV;
+//            configure.type = AlertTypeTakePVAndChooesPV;
+            type = FPImageTypeSelectImageOrVideo;
         }else if (self.interType == FPImageTypeSelectImageAndVideo){
-            configure.type = AlertTypeTakePVAndChooesPV;
+//            configure.type = AlertTypeTakePVAndChooesPV;
+            type = FPImageTypeSelectImageAndVideo;
             if (self.maxVideoCount > 0) {
-                if (videoSource.count >= self.maxVideoCount) configure.type = AlertTypeTakePAndChooesP;
+                if (videoSource.count >= self.maxVideoCount) {
+//                    configure.type = AlertTypeTakePAndChooesP;
+                    type = FPImageTypeSelectImage;
+                }
             }
             if (self.maxImageCount > 0){
-                if (imageSource.count >= self.maxImageCount) configure.type = AlertTypeTakeVAndChooesV;
+                if (imageSource.count >= self.maxImageCount) {
+//                    configure.type = AlertTypeTakeVAndChooesV;
+                    type = FPImageTypeSelectVideo;
+                }
             }
         }
-        configure.didFinishTakeVideoHandle = ^(UIImage * _Nonnull coverImage, PHAsset * _Nonnull pAsset, NSError * _Nonnull error) {
-            if (weakSelf.type == FPImageTypeSelectImageOrVideo){
-                weakSelf.interType = FPImageTypeSelectVideo;
-            }
-            PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
-            options.version = PHImageRequestOptionsVersionCurrent;
-            options.deliveryMode = PHVideoRequestOptionsDeliveryModeAutomatic;
-            [[PHImageManager defaultManager] requestAVAssetForVideo:pAsset options:options resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
-                AVURLAsset *urlAsset = (AVURLAsset *)asset;
-                FPVideoItem *item = [FPVideoItem new];
-                item.coverImage = coverImage;
-                item.videoUrl = urlAsset.URL;
-                item.pixelWidth = pAsset.pixelWidth;
-                item.pixelHeight = pAsset.pixelHeight;
+//        configure.didFinishTakeVideoHandle = ^(UIImage * _Nonnull coverImage, PHAsset * _Nonnull pAsset, NSError * _Nonnull error) {
+//            if (weakSelf.type == FPImageTypeSelectImageOrVideo){
+//                weakSelf.interType = FPImageTypeSelectVideo;
+//            }
+//            PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
+//            options.version = PHImageRequestOptionsVersionCurrent;
+//            options.deliveryMode = PHVideoRequestOptionsDeliveryModeAutomatic;
+//            [[PHImageManager defaultManager] requestAVAssetForVideo:pAsset options:options resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+//                AVURLAsset *urlAsset = (AVURLAsset *)asset;
+//                FPVideoItem *item = [FPVideoItem new];
+//                item.coverImage = coverImage;
+//                item.videoUrl = urlAsset.URL;
+//                item.pixelWidth = pAsset.pixelWidth;
+//                item.pixelHeight = pAsset.pixelHeight;
+//                NSMutableArray *newSource = [NSMutableArray arrayWithArray:weakSelf.source];
+//                [newSource addObject:item];
+//                weakSelf.source = newSource;
+//                if (weakSelf.addSourceBlock) weakSelf.addSourceBlock(@[item], weakSelf.source);
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [weakSelf.collectionView reloadData];
+//                });
+//            }];
+//        };
+//        configure.didFinishTakePhotosHandle = ^(NSArray<UIImage *> * _Nonnull images, NSError * _Nonnull error) {
+//            if (weakSelf.type == FPImageTypeSelectImageOrVideo){
+//                weakSelf.interType = FPImageTypeSelectImage;
+//            }
+//            NSMutableArray *newSource = [NSMutableArray arrayWithArray:weakSelf.source];
+//            [newSource addObjectsFromArray:images];
+//            weakSelf.source = newSource;
+//            if (weakSelf.addSourceBlock) weakSelf.addSourceBlock(images, weakSelf.source);
+//            [weakSelf.collectionView reloadData];
+//        };
+        //        [FPChooesImageHelper chooesImageOrVideoConfiure:configure fromVC:nil];
+        if (self.tapAddSourceBlock) {
+            self.tapAddSourceBlock(type, imageMaxCount,videoMaxCount, ^(NSArray<UIImage *> * _Nonnull images, NSArray<PHAsset *> * _Nonnull assets) {
+                if (weakSelf.type == FPImageTypeSelectImageOrVideo && images.count > 0){
+                    weakSelf.interType = FPImageTypeSelectImage;
+                }
+                if (weakSelf.type == FPImageTypeSelectImageOrVideo && assets.count > 0){
+                    weakSelf.interType = FPImageTypeSelectVideo;
+                }
                 NSMutableArray *newSource = [NSMutableArray arrayWithArray:weakSelf.source];
-                [newSource addObject:item];
-                weakSelf.source = newSource;
-                if (weakSelf.addSourceBlock) weakSelf.addSourceBlock(@[item], weakSelf.source);
-                dispatch_async(dispatch_get_main_queue(), ^{
+                [newSource addObjectsFromArray:images];
+                if (assets.count > 0) {
+                    dispatch_group_t dispatchGroup = dispatch_group_create();
+                    NSMutableArray *videoItems = [NSMutableArray array];
+                    [assets enumerateObjectsUsingBlock:^(PHAsset * _Nonnull pAsset, NSUInteger idx, BOOL * _Nonnull stop) {
+                        PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
+                        options.version = PHImageRequestOptionsVersionCurrent;
+                        options.deliveryMode = PHVideoRequestOptionsDeliveryModeAutomatic;
+                        dispatch_group_enter(dispatchGroup);
+                        [[PHImageManager defaultManager] requestAVAssetForVideo:pAsset options:options resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+                            AVURLAsset *urlAsset = (AVURLAsset *)asset;
+                            FPVideoItem *item = [FPVideoItem new];
+                            item.coverImage = [self getVideoPreViewImage:urlAsset.URL];
+                            item.videoUrl = urlAsset.URL;
+                            item.pixelWidth = pAsset.pixelWidth;
+                            item.pixelHeight = pAsset.pixelHeight;
+                            [videoItems addObject:item];
+                            dispatch_group_leave(dispatchGroup);
+                        }];
+                    }];
+                    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
+                        [newSource addObjectsFromArray:videoItems];
+                        weakSelf.source = newSource;
+                        [weakSelf.collectionView reloadData];
+                    });
+                }else{
+                    weakSelf.source = newSource;
                     [weakSelf.collectionView reloadData];
-                });
-            }];
-        };
-        configure.didFinishTakePhotosHandle = ^(NSArray<UIImage *> * _Nonnull images, NSError * _Nonnull error) {
-            if (weakSelf.type == FPImageTypeSelectImageOrVideo){
-                weakSelf.interType = FPImageTypeSelectImage;
-            }
-            NSMutableArray *newSource = [NSMutableArray arrayWithArray:weakSelf.source];
-            [newSource addObjectsFromArray:images];
-            weakSelf.source = newSource;
-            if (weakSelf.addSourceBlock) weakSelf.addSourceBlock(images, weakSelf.source);
-            [weakSelf.collectionView reloadData];
-        };
-        [FPChooesImageHelper chooesImageOrVideoConfiure:configure fromVC:nil];
+                }
+                
+            });
+        }
     }else{//预览
         id source = self.source[indexPath.item];
         if ([source isKindOfClass:[FPVideoItem class]]) {//点击视频
@@ -450,12 +503,33 @@ static void *contentSizeContext = &contentSizeContext;
         }
     }
 }
+- (UIImage*) getVideoPreViewImage:(NSURL *)path
+{
+    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:path options:nil];
+    AVAssetImageGenerator *assetGen = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+    assetGen.appliesPreferredTrackTransform = YES;
+    CMTime time = CMTimeMakeWithSeconds(0.0, 600);
+    NSError *error = nil;
+    CMTime actualTime;
+    CGImageRef image = [assetGen copyCGImageAtTime:time actualTime:&actualTime error:&error];
+    UIImage *videoImage = [[UIImage alloc] initWithCGImage:image];
+    CGImageRelease(image);
+    return videoImage;
+}
+
 #pragma mark layoutDelegate
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    CGFloat itemW = floor((self.bounds.size.width - self.sectionInset.left - self.sectionInset.right - (self.column - 1) * self.minimumInteritemSpacing) / self.column);
+    collectionView.contentInset = UIEdgeInsetsZero;
+    CGFloat sWidth = self.bounds.size.width;
+    CGFloat itemW = floor((sWidth - self.sectionInset.left - self.sectionInset.right - (self.column - 1) * self.minimumInteritemSpacing) / self.column);
     CGFloat itemH = itemW;
     CGSize size = CGSizeMake(itemW,itemH);
-    if ((self.interType == FPImageTypeShowImage || self.interType == FPImageTypeSelectImage) && self.maxImageCount == 1 && !CGSizeEqualToSize(self.itemSize, CGSizeZero) && self.source.count > indexPath.item) return self.itemSize;
+    if ((self.interType == FPImageTypeShowImage || self.interType == FPImageTypeSelectImage) && self.maxImageCount == 1 && !CGSizeEqualToSize(self.itemSize, CGSizeZero) && self.source.count > indexPath.item) {
+        if (self.itemSize.width + self.sectionInset.right < sWidth) {
+            collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, sWidth - self.itemSize.width - self.sectionInset.right);
+        }
+        return self.itemSize;
+    }
     if (self.interType == FPImageTypeSelectImageAndVideo || self.interType == FPImageTypeShowImageAndVideo || self.interType == FPImageTypeShowImage || self.interType == FPImageTypeSelectImage) return size;
     if ((self.interType == FPImageTypeSelectVideo || self.interType == FPImageTypeShowVideo || self.interType == FPImageTypeSelectImageOrVideo) && self.maxVideoCount == 1) {
         if (self.source.count > indexPath.item) {
@@ -464,8 +538,14 @@ static void *contentSizeContext = &contentSizeContext;
                 FPVideoItem *videoItem = (FPVideoItem*)obj;
                 if (!CGSizeEqualToSize(videoItem.itemSize, CGSizeZero)) {
                     if (self.automaticConfiureVideoSize) {
+                        if (videoItem.itemSize.width + self.sectionInset.right < sWidth) {
+                            collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, sWidth - videoItem.itemSize.width - self.sectionInset.right);
+                        }
                         return videoItem.itemSize;
                     }else if (self.interType == FPImageTypeShowVideo){
+                        if (videoItem.itemSize.width + self.sectionInset.right < sWidth) {
+                            collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, sWidth - videoItem.itemSize.width - self.sectionInset.right);
+                        }
                         return videoItem.itemSize;
                     }
                 }

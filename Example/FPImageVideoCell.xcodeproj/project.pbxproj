@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		040EDEFB23B459F5001B4D94 /* FPChooesImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 040EDEFA23B459F5001B4D94 /* FPChooesImageHelper.m */; };
 		0414074723B332040093D8A4 /* TestVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0414074523B332030093D8A4 /* TestVC.xib */; };
 		0414074823B332040093D8A4 /* TestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0414074623B332040093D8A4 /* TestVC.m */; };
 		0414074C23B33B190093D8A4 /* example.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 0414074B23B33B190093D8A4 /* example.mp4 */; };
@@ -40,6 +41,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		040EDEF923B459F4001B4D94 /* FPChooesImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPChooesImageHelper.h; sourceTree = "<group>"; };
+		040EDEFA23B459F5001B4D94 /* FPChooesImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPChooesImageHelper.m; sourceTree = "<group>"; };
 		0414074423B332030093D8A4 /* TestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestVC.h; sourceTree = "<group>"; };
 		0414074523B332030093D8A4 /* TestVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestVC.xib; sourceTree = "<group>"; };
 		0414074623B332040093D8A4 /* TestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestVC.m; sourceTree = "<group>"; };
@@ -147,6 +150,8 @@
 				6003F5A6195388D20070C39A /* FPViewController.m */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				0414074423B332030093D8A4 /* TestVC.h */,
+				040EDEF923B459F4001B4D94 /* FPChooesImageHelper.h */,
+				040EDEFA23B459F5001B4D94 /* FPChooesImageHelper.m */,
 				0414074623B332040093D8A4 /* TestVC.m */,
 				0414074523B332030093D8A4 /* TestVC.xib */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
@@ -237,6 +242,7 @@
 				6003F5AA195388D20070C39A /* Sources */,
 				6003F5AB195388D20070C39A /* Frameworks */,
 				6003F5AC195388D20070C39A /* Resources */,
+				0DB0A5F800DCC67F7A539C76 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -311,6 +317,30 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0DB0A5F800DCC67F7A539C76 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FPImageVideoCell_Tests/Pods-FPImageVideoCell_Tests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/FPPermission/FPPermission.framework",
+				"${BUILT_PRODUCTS_DIR}/LCActionSheet/LCActionSheet.framework",
+				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
+				"${BUILT_PRODUCTS_DIR}/TZImagePickerController/TZImagePickerController.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FPPermission.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LCActionSheet.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TZImagePickerController.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FPImageVideoCell_Tests/Pods-FPImageVideoCell_Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		783BFBD48A9DA515E3BBDDEC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -363,22 +393,14 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-FPImageVideoCell_Example/Pods-FPImageVideoCell_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/FPImageVideoCell/FPImageVideoCell.framework",
-				"${BUILT_PRODUCTS_DIR}/FPPermission/FPPermission.framework",
-				"${BUILT_PRODUCTS_DIR}/LCActionSheet/LCActionSheet.framework",
-				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/TZImagePickerController/TZImagePickerController.framework",
 				"${BUILT_PRODUCTS_DIR}/YBImageBrowser/YBImageBrowser.framework",
 				"${BUILT_PRODUCTS_DIR}/YYImage/YYImage.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FPImageVideoCell.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FPPermission.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LCActionSheet.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TZImagePickerController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YBImageBrowser.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYImage.framework",
 			);
@@ -398,6 +420,7 @@
 				6003F59E195388D20070C39A /* FPAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* FPViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				040EDEFB23B459F5001B4D94 /* FPChooesImageHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

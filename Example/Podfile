@@ -7,7 +7,9 @@ target 'FPImageVideoCell_Example' do
 
   target 'FPImageVideoCell_Tests' do
     inherit! :search_paths
+    pod 'TZImagePickerController'
+    pod 'FPPermission'
+    pod 'LCActionSheet'
 
-    
   end
 end

@@ -10,7 +10,6 @@
 #endif
 #endif
 
-#import "FPChooesImageHelper.h"
 #import "FPImageCCell.h"
 #import "FPImageResuableView.h"
 #import "FPImageVideoCell.h"

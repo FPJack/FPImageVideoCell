@@ -15,8 +15,7 @@
 #import <FPPermission/FPVideoEditVC.h>
 @implementation FPChooesConfiure
 @end
-@interface FPChooesImageHelper()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
-@property (nonatomic, strong) UIImagePickerController *imagePickerVc;
+@interface FPChooesImageHelper()
 @property (nonatomic,strong)FPChooesConfiure *configure;
 @property (nonatomic,strong)UIViewController *fromVC;
 @end
@@ -42,14 +41,7 @@
     [instance alertShow:configure fromVC:fromVC];
     return instance;
 }
-- (UIImagePickerController *)imagePickerVc {
-    if (!_imagePickerVc) {
-        _imagePickerVc = [[UIImagePickerController alloc] init];
-        _imagePickerVc.delegate = self;
-    }
-    return _imagePickerVc;
-}
-- (void)alertShow:(FPChooesConfiure*)configure fromVC:(UIViewController* __nullable)fromVC{
+- (void)alertShow:(FPChooesConfiure*)configure fromVC:(UIViewController* __nullable)fromVC{    
     LCActionSheet *sheet = [[LCActionSheet alloc]initWithTitle:configure.title cancelButtonTitle:@"取消" clicked:^(LCActionSheet * _Nonnull actionSheet, NSInteger buttonIndex) {
         if (buttonIndex == 1) {
             //授权
