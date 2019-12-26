@@ -347,15 +347,12 @@ static void *contentSizeContext = &contentSizeContext;
         NSArray *imageSource = self.imageSource;
         NSArray *videoSource = self.videoSource;
         FPImageType type = FPImageTypeSelectImage;
-        NSInteger imageMaxCount = 0;
-        NSInteger videoMaxCount = 0;
-
+        NSInteger imageMaxCount = MIN(self.maxAllCount - self.source.count, self.maxImageCount - imageSource.count);
+        NSInteger videoMaxCount = MIN(self.maxAllCount - self.source.count, self.maxVideoCount - videoSource.count);
 //        FPChooesConfiure *configure = [FPChooesConfiure new];
 //        configure.maxVideoDurtaion = self.maxVideoDurtaion;;
 //        configure.allowEditImage = self.allowsEditingImage;
 //        configure.allowEditVideo = self.allowsEditingVideo;
-//        imageMaxCount = MIN(self.maxAllCount - self.source.count, self.maxImageCount - imageSource.count);
-//        videoMaxCount = MIN(self.maxAllCount - self.source.count, self.maxVideoCount - imageSource.count);
 //
 //        configure.maxImageCount = imageMaxCount;
         if (self.interType == FPImageTypeSelectImage) {

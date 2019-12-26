@@ -67,6 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,copy)void (^tapVideoBlock)(FPVideoItem * item,UICollectionViewCell *cell);
 @property (nonatomic,assign)FPImageType type;
 //Nib注册Cell
++ (NSBundle*)fpSourceBundle;
 + (instancetype)loadVideoCellFromXib;
 + (void)registerNibFromTableView:(UITableView*)tableView;
 + (FPImageVideoCell*)dequeueReusableCellFromTableView:(UITableView*)tableView indexPath:(NSIndexPath*)indexPath;
