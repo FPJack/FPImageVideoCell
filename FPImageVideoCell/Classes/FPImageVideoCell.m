@@ -473,6 +473,7 @@ static void *contentSizeContext = &contentSizeContext;
                 self.tapImageBlock(self.source[indexPath.item], [collectionView cellForItemAtIndexPath:indexPath]);
             }else{
                 NSMutableArray *images = [NSMutableArray array];
+              __block NSInteger currentPage = 0;
                 [self.source enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                     if (![obj isKindOfClass:[FPVideoItem class]]) {
                         YBIBImageData *data = [YBIBImageData new];
@@ -482,12 +483,13 @@ static void *contentSizeContext = &contentSizeContext;
                             data.imageURL = [NSURL URLWithString:obj];
                         }
                         data.projectiveView = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:idx inSection:0]];
+                        if (idx == indexPath.item) currentPage = images.count;
                         [images addObject:data];
                     }
                 }];
                 YBImageBrowser *browser = [YBImageBrowser new];
                 browser.dataSourceArray = images;
-                browser.currentPage = indexPath.item;
+                browser.currentPage = currentPage;
                 [browser show];
             }
         }
