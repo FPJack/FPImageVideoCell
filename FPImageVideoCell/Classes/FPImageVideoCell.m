@@ -493,8 +493,8 @@ static void *contentSizeContext = &contentSizeContext;
     CGFloat itemH = itemW;
     CGSize size = CGSizeMake(itemW,itemH);
     if ((self.interType == FPImageTypeShowImage || self.interType == FPImageTypeSelectImage) && self.maxImageCount == 1 && !CGSizeEqualToSize(self.itemSize, CGSizeZero) && self.source.count > indexPath.item) {
-        if (self.itemSize.width + self.sectionInset.right < sWidth) {
-            collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, sWidth - self.itemSize.width - self.sectionInset.right);
+        if (self.itemSize.width + self.sectionInset.right + self.sectionInset.left < sWidth) {
+            collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, sWidth - self.itemSize.width - self.sectionInset.right - self.sectionInset.left);
         }
         return self.itemSize;
     }
@@ -506,13 +506,13 @@ static void *contentSizeContext = &contentSizeContext;
                 FPVideoItem *videoItem = (FPVideoItem*)obj;
                 if (!CGSizeEqualToSize(videoItem.itemSize, CGSizeZero)) {
                     if (self.automaticConfiureVideoSize) {
-                        if (videoItem.itemSize.width + self.sectionInset.right < sWidth) {
-                            collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, sWidth - videoItem.itemSize.width - self.sectionInset.right);
+                        if (videoItem.itemSize.width + self.sectionInset.right + self.sectionInset.left < sWidth) {
+                            collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, sWidth - videoItem.itemSize.width - self.sectionInset.right - self.sectionInset.left);
                         }
                         return videoItem.itemSize;
                     }else if (self.interType == FPImageTypeShowVideo){
-                        if (videoItem.itemSize.width + self.sectionInset.right < sWidth) {
-                            collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, sWidth - videoItem.itemSize.width - self.sectionInset.right);
+                        if (videoItem.itemSize.width + self.sectionInset.right + self.sectionInset.left < sWidth) {
+                            collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, sWidth - videoItem.itemSize.width - self.sectionInset.right - self.sectionInset.left);
                         }
                         return videoItem.itemSize;
                     }

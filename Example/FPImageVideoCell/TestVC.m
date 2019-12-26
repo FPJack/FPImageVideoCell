@@ -59,7 +59,7 @@
             NSArray *source = @[url1];
             cell.itemSize = CGSizeMake(300, 200);
             cell.source = [source mutableCopy];
-            cell.maxImageCount = 2;
+            cell.maxImageCount = 1;
         }
             break;
         case FPImageTypeSelectImage:
