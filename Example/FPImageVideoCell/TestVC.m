@@ -22,17 +22,10 @@
 @implementation TestVC
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    Example *obj = [Example new];
-//    [obj test];
-//    [obj privateTest];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
-    FPImageCCell *cell = [[FPImageCCell alloc] initWithFrame:CGRectZero];
-    FPImageCCell *cell1 = [[FPImageCCell alloc] init];
-    
     [FPImageVideoCell registerClassFromTableView:self.tableView];
-//    [FPImageVideoCell registerNibFromTableView:self.tableView];
     
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -55,11 +48,11 @@
             NSString *url2 = @"https://img.52z.com/upload/news/image/20180621/20180621055651_47663.jpg";
             NSString *url3 = @"https://img.52z.com/upload/news/image/20180621/20180621055651_47663.jpg";
             NSString *url4 = @"https://img.52z.com/upload/news/image/20180621/20180621055651_47663.jpg";
-//            NSArray *source = @[url1,url2,url3,url4];
-            NSArray *source = @[url1];
-            cell.itemSize = CGSizeMake(300, 200);
+            NSArray *source = @[url1,url2,url3,url4];
+//            NSArray *source = @[url1];
+//            cell.itemSize = CGSizeMake(300, 200);
             cell.source = [source mutableCopy];
-            cell.maxImageCount = 1;
+//            cell.maxImageCount = 1;
         }
             break;
         case FPImageTypeSelectImage:
@@ -118,7 +111,7 @@
         resuableView.labLeftCon.constant = 0;
         resuableView.titleLab.text = self.title;
     };
-    cell.tapAddSourceBlock = ^(FPImageType type, NSInteger leaveMaxCount,NSInteger leaveVideoMaxCount, void (^ _Nonnull callBackBlock)(NSArray<UIImage *> * , NSArray<PHAsset *> * )) {
+    cell.tapAddSourceBlock = ^(FPImageType type, NSInteger leaveMaxCount,NSInteger leaveVideoMaxCount, void (^ _Nonnull injectBlock)(NSArray<UIImage *> * , NSArray<PHAsset *> * )) {
         FPChooesConfiure *configure = [FPChooesConfiure new];
         configure.maxVideoDurtaion = 60;
         configure.maxImageCount = leaveMaxCount;
@@ -132,13 +125,13 @@
             configure.type = AlertTypeTakePVAndChooesPV;
         }
         configure.didFinishTakeVideoHandle = ^(UIImage * _Nonnull coverImage, PHAsset * _Nonnull asset, NSError * _Nullable error) {
-            if (callBackBlock) {
-                callBackBlock(nil,@[asset]);
+            if (injectBlock) {
+                injectBlock(nil,@[asset]);
             }
         };
         configure.didFinishTakePhotosHandle = ^(NSArray<UIImage *> * _Nonnull images, NSError * _Nullable error) {
-            if (callBackBlock) {
-                callBackBlock(images,nil);
+            if (injectBlock) {
+                injectBlock(images,nil);
             }
         };
         [FPChooesImageHelper chooesImageOrVideoConfiure:configure fromVC:nil];

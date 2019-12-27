@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,copy)void (^deleteSourceBlock)(NSArray* deleteSource,NSArray *source);
 
 //custom tap event
-@property (nonatomic,copy)void (^tapAddSourceBlock)(FPImageType type,NSInteger leaveImageMaxCount,NSInteger leaveVideoMaxCount,void(^callBackBlock)(NSArray <UIImage *>  * _Nullable images,NSArray <PHAsset *> * _Nullable assets));
+@property (nonatomic,copy)void (^tapAddSourceBlock)(FPImageType type,NSInteger leaveImageMaxCount,NSInteger leaveVideoMaxCount,void(^injectBlock)(NSArray <UIImage *>  * _Nullable images,NSArray <PHAsset *> * _Nullable assets));
 @property (nonatomic,copy)void (^tapImageBlock)(id obj,UICollectionViewCell *cell);
 @property (nonatomic,copy)void (^tapVideoBlock)(FPVideoItem * item,UICollectionViewCell *cell);
 @property (nonatomic,assign)FPImageType type;
