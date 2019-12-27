@@ -68,6 +68,10 @@ static void *contentSizeContext = &contentSizeContext;
         return _maxAllCount;
     }
 }
+- (void)setSource:(NSMutableArray *)source{
+    _source = source;
+    [self.collectionView reloadData];
+}
 - (NSMutableArray *)imageSource{
     NSMutableArray *arr = [NSMutableArray array];
     [self.source enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -91,6 +95,8 @@ static void *contentSizeContext = &contentSizeContext;
             self.heightConstraint.constant = self.cellHeight;
             [tableView endUpdates];
         });
+    }else{
+        self.heightConstraint.constant = self.cellHeight;
     }
 }
 - (CGFloat)column{return _column <= 0 ? 3 : _column;}
