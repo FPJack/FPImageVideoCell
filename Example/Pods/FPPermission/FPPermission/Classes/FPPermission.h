@@ -9,8 +9,12 @@
 #import <Foundation/Foundation.h>
 typedef NS_ENUM(NSInteger, FPPermissionType) {
     FPPermissionCamer = 0,
+    FPPermissionMicrophone,
+    FPPermissionCalendars,
+    FPPermissionContacts,
     FPPermissionPhoto,
-    FPPermissionLocation,
+    FPPermissionLocationWhenInUse,
+    FPPermissionLocationAlways,
     FPPermissionBluetooth
 };
 typedef NS_ENUM(NSInteger, FPPermissionStatus) {
@@ -19,21 +23,29 @@ typedef NS_ENUM(NSInteger, FPPermissionStatus) {
     FPPermissionStatusAuthorized,
     FPPermissionStatusRestricted,
     FPPermissionStatusAuthorizedWhenUse,//定位特定多一个返回状态
-    FPPermissionStatusPoweredOff
+    FPPermissionStatusPoweredOff//蓝牙定位手机权限关闭状态
 };
-#define kPermissionTitleInfo @{@(FPPermissionCamer):@"相机",\
+#define kFPPermissionTitleInfo @{@(FPPermissionCamer):@"相机",\
                                @(FPPermissionPhoto):@"相册",\
-                                @(FPPermissionLocation):@"定位",\
+                                @(FPPermissionMicrophone):@"麦克风",\
+                                @(FPPermissionLocationWhenInUse):@"定位",\
+                                @(FPPermissionLocationAlways):@"定位",\
+                                @(FPPermissionCalendars):@"日历",\
+                                @(FPPermissionContacts):@"通讯录",\
                                 @(FPPermissionBluetooth):@"蓝牙"}
-#define kPermissionDesInfo @{@(FPPermissionCamer):@"NSCameraUsageDescription",\
+#define kFPPermissionDesInfo @{@(FPPermissionCamer):@"NSCameraUsageDescription",\
                              @(FPPermissionPhoto):@"NSPhotoLibraryUsageDescription",\
-                            @(FPPermissionLocation):@"NSLocationWhenInUseUsageDescription",\
-                            @(FPPermissionBluetooth):@"NSBluetoothPeripheralUsageDescription"}
-typedef void (^CallBackBlock)(FPPermissionStatus status);
+                             @(FPPermissionMicrophone):@"NSMicrophoneUsageDescription",\
+                             @(FPPermissionCalendars):@"NSCalendarsUsageDescription",\
+                             @(FPPermissionContacts):@"NSContactsUsageDescription",\
+                             @(FPPermissionLocationAlways):@"NSLocationAlwaysUsageDescription",\
+                             @(FPPermissionLocationWhenInUse):@"NSLocationWhenInUseUsageDescription",\
+                             @(FPPermissionBluetooth):@"NSBluetoothPeripheralUsageDescription"}
+typedef void (^FPCallBackBlock)(FPPermissionStatus status);
 
 NS_ASSUME_NONNULL_BEGIN
 @interface FPPermission : NSObject
-+ (void)requestAuthorizationStatus:(FPPermissionType)type showAlertWhenDenied:(BOOL)alert resultBlock:(CallBackBlock)block;
++ (void)requestAuthorizationStatus:(FPPermissionType)type showAlertWhenDenied:(BOOL)alert resultBlock:(FPCallBackBlock)block;
 + (FPPermissionStatus)mapStatus:(FPPermissionType)type;
 + (void)jumpAppSetting;
 @end

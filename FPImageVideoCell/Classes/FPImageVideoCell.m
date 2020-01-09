@@ -7,7 +7,7 @@
 //
 #import "FPImageVideoCell.h"
 #import <SDWebImage/SDWebImage.h>
-#import <YBImageBrowser/YBImageBrowser.h>
+//#import <YBImageBrowser/YBImageBrowser.h>
 #import <AVKit/AVKit.h>
 static void *contentSizeContext = &contentSizeContext;
 @interface FPImageVideoCell()<UICollectionViewDelegateFlowLayout,UICollectionViewDelegate,UICollectionViewDataSource>
@@ -442,7 +442,7 @@ static void *contentSizeContext = &contentSizeContext;
         id source = self.source[indexPath.item];
         if ([source isKindOfClass:[FPVideoItem class]]) {//点击视频
             if (self.tapVideoBlock) {
-                self.tapVideoBlock(self.source[indexPath.item], [collectionView cellForItemAtIndexPath:indexPath]);
+                self.tapVideoBlock(self.source[indexPath.item], [collectionView cellForItemAtIndexPath:indexPath],indexPath,self.source);
             }else{
                 AVPlayerViewController *ctrl = [[AVPlayerViewController alloc] init];
                 FPVideoItem *videoItem = self.source[indexPath.item];
@@ -452,27 +452,27 @@ static void *contentSizeContext = &contentSizeContext;
             }
         }else{//点击图片
             if (self.tapImageBlock) {
-                self.tapImageBlock(self.source[indexPath.item], [collectionView cellForItemAtIndexPath:indexPath]);
+                self.tapImageBlock(self.source[indexPath.item], [collectionView cellForItemAtIndexPath:indexPath],indexPath,self.source);
             }else{
-                NSMutableArray *images = [NSMutableArray array];
-              __block NSInteger currentPage = 0;
-                [self.source enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    if (![obj isKindOfClass:[FPVideoItem class]]) {
-                        YBIBImageData *data = [YBIBImageData new];
-                        if ([obj isKindOfClass:[UIImage class]]) {
-                            data.image  = ^__kindof UIImage * _Nullable{return obj;};
-                        }else{
-                            data.imageURL = [NSURL URLWithString:obj];
-                        }
-                        data.projectiveView = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:idx inSection:0]];
-                        if (idx == indexPath.item) currentPage = images.count;
-                        [images addObject:data];
-                    }
-                }];
-                YBImageBrowser *browser = [YBImageBrowser new];
-                browser.dataSourceArray = images;
-                browser.currentPage = currentPage;
-                [browser show];
+//                NSMutableArray *images = [NSMutableArray array];
+//              __block NSInteger currentPage = 0;
+//                [self.source enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//                    if (![obj isKindOfClass:[FPVideoItem class]]) {
+//                        YBIBImageData *data = [YBIBImageData new];
+//                        if ([obj isKindOfClass:[UIImage class]]) {
+//                            data.image  = ^__kindof UIImage * _Nullable{return obj;};
+//                        }else{
+//                            data.imageURL = [NSURL URLWithString:obj];
+//                        }
+//                        data.projectiveView = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:idx inSection:0]];
+//                        if (idx == indexPath.item) currentPage = images.count;
+//                        [images addObject:data];
+//                    }
+//                }];
+//                YBImageBrowser *browser = [YBImageBrowser new];
+//                browser.dataSourceArray = images;
+//                browser.currentPage = currentPage;
+//                [browser show];
             }
         }
     }

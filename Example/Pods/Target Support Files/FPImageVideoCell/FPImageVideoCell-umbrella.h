@@ -11,7 +11,6 @@
 #endif
 
 #import "FPImageCCell.h"
-#import "FPImageResuableView.h"
 #import "FPImageVideoCell.h"
 
 FOUNDATION_EXPORT double FPImageVideoCellVersionNumber;

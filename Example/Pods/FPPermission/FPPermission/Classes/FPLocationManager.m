@@ -29,8 +29,6 @@
     if (self) {
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
-        [self.locationManager requestWhenInUseAuthorization];
-        [self.locationManager requestAlwaysAuthorization];
         self.observers = [NSMutableArray array];
     }
     return self;
@@ -121,26 +119,32 @@
         }
     }
 }
-@end
-@interface FPLocationObject()
-@end
-@implementation FPLocationObject
-+ (void)startLocationWithSuccessBlock:(void (^)(NSArray<CLLocation *> *locations))successBlock failureBlock:(void (^)(NSError *error))failureBlock geocoderBlock:(void (^)(NSArray *geocoderArray,LocationModel *locationModel))geocoderBlock{
+- (void)requestAlwaysAuthorization{
+    [self.locationManager requestAlwaysAuthorization];
+}
+- (void)requestWhenInUseAuthorization{
+    [self.locationManager requestWhenInUseAuthorization];
+}
+- (void)startLocationWithSuccessBlock:(void (^)(NSArray<CLLocation *> *locations))successBlock failureBlock:(void (^)(NSError *error))failureBlock geocoderBlock:(void (^)(NSArray *geocoderArray,LocationModel *locationModel))geocoderBlock{
     FPLocationObject *obj = [FPLocationObject new];
     obj.successBlock = successBlock;
     obj.failureBlock = failureBlock;
     obj.geocodeBlock = geocoderBlock;
-    [FPLocationManager.manager startLocationObserver:obj];
+    [self startLocationObserver:obj];
 }
-+ (void)startLocationWithGeocoderBlock:(void (^)(NSArray *geocoderArray,LocationModel *locationModel))geocoderBlock failureBlock:(void (^)(NSError *error))failureBlock{
+- (void)startLocationWithGeocoderBlock:(void (^)(NSArray *geocoderArray,LocationModel *locationModel))geocoderBlock failureBlock:(void (^)(NSError *error))failureBlock{
     FPLocationObject *obj = [FPLocationObject new];
     obj.failureBlock = failureBlock;
     obj.geocodeBlock = geocoderBlock;
-    [FPLocationManager.manager startLocationObserver:obj];
+    [self startLocationObserver:obj];
 }
-+ (void)startLocationWithDidChangeAuthorizationStatusBlock:(void (^)(CLAuthorizationStatus status))didChangeAuthorizationStatusBlock{
+- (void)startLocationWithDidChangeAuthorizationStatusBlock:(void (^)(CLAuthorizationStatus status))didChangeAuthorizationStatusBlock{
     FPLocationObject *obj = [FPLocationObject new];
     obj.didChangeAuthorizationStatusBlock = didChangeAuthorizationStatusBlock;
-    [FPLocationManager.manager startLocationObserver:obj];
+    @synchronized (self) {[self.observers addObject:obj];}
 }
+@end
+@interface FPLocationObject()
+@end
+@implementation FPLocationObject
 @end
