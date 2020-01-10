@@ -1,6 +1,5 @@
 PODS:
-  - FPImageVideoCell (0.2.0):
-    - SDWebImage
+  - FPImageVideoCell (0.2.1)
   - FPPermission (0.1.7)
   - LCActionSheet (3.5.4):
     - Masonry (~> 1.1.0)
@@ -14,6 +13,7 @@ DEPENDENCIES:
   - FPImageVideoCell (from `../`)
   - FPPermission
   - LCActionSheet
+  - SDWebImage
   - TZImagePickerController
 
 SPEC REPOS:
@@ -29,13 +29,13 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  FPImageVideoCell: e2ec103953b1aba5bef22baf7683349cb174527f
+  FPImageVideoCell: 5e7c3e42d84d9696ef54b09fdf538152bd9352d6
   FPPermission: 64377a7dfa81ede38bb1bac8cf64e5989566e683
   LCActionSheet: a015dee43c54c8f6631e86facd9e2ad59dc1b5ab
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   SDWebImage: 29c340dbdcef342bb13125553f4e19ce056b07a7
   TZImagePickerController: 1f92968aa0e98a06b9e2eccca8560acc19254257
 
-PODFILE CHECKSUM: ea76b3f5056f42614672fdd630b3359b198e3c92
+PODFILE CHECKSUM: 890160dc050de24cdb2931afe0f5f36b81b0b227
 
 COCOAPODS: 1.9.0.beta.2

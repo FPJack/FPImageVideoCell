@@ -11,6 +11,7 @@
 #import <AVKit/AVKit.h>
 #import <FPImageVideoCell.h>
 #import "FPChooesImageHelper.h"
+#import <SDWebImage/SDWebImage.h>
 //#import <FPZuJianHua/Example.h>
 //#import <Private/Example.h>
 @interface TestVC ()<UITableViewDataSource,UITableViewDelegate>
@@ -52,6 +53,7 @@
 //            NSArray *source = @[url1];
 //            cell.itemSize = CGSizeMake(300, 200);
             cell.source = [source mutableCopy];
+            
 //            cell.maxImageCount = 1;
         }
             break;
@@ -135,6 +137,9 @@
             }
         };
         [FPChooesImageHelper chooesImageOrVideoConfiure:configure fromVC:nil];
+    };
+    cell.loadNetworkImageBlock = ^(UIImageView * _Nonnull imageView, NSURL * _Nonnull url, UIImage * _Nonnull placeholderImage) {
+        [imageView sd_setImageWithURL:url placeholderImage:placeholderImage];
     };
     return cell;
 }

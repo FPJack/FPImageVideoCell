@@ -6,7 +6,6 @@
 //  Copyright © 2019 Mac. All rights reserved.
 //
 #import "FPImageVideoCell.h"
-#import <SDWebImage/SDWebImage.h>
 //#import <YBImageBrowser/YBImageBrowser.h>
 #import <AVKit/AVKit.h>
 static void *contentSizeContext = &contentSizeContext;
@@ -186,7 +185,7 @@ static void *contentSizeContext = &contentSizeContext;
     return view;
 }
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    UICollectionViewCell *cell;
+    FPImageCCell *cell;
     __weak typeof(self) weakSelf = self;
     if (self.interType == FPImageTypeShowImage) {
         FPImageCCell *imgCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"FPImageCCell" forIndexPath:indexPath];
@@ -197,7 +196,7 @@ static void *contentSizeContext = &contentSizeContext;
             imgCell.imgView.image = (UIImage*)obj;
         }else if ([obj isKindOfClass:[NSString class]]){
             //网络加载
-            [imgCell.imgView sd_setImageWithURL:[NSURL URLWithString:self.source[indexPath.item]] placeholderImage:self.placeholderImage];
+            [self loadNetingImage:imgCell.imgView url:[NSURL URLWithString:obj] placeholderImage:self.placeholderImage];
         }
         cell = imgCell;
     }else if (self.interType == FPImageTypeSelectImage){
@@ -209,23 +208,12 @@ static void *contentSizeContext = &contentSizeContext;
         }else{//正常cell
             imgCell.deleteBtn.hidden = NO;
             [imgCell.deleteBtn setImage:self.deleteImage forState:UIControlStateNormal];
-            imgCell.deleteBlock = ^(id  _Nonnull object) {
-                id deleteObj = weakSelf.source[indexPath.item];
-                [weakSelf.source removeObjectAtIndex:indexPath.item];
-                NSMutableArray *newSource = [NSMutableArray arrayWithArray:weakSelf.source];
-                weakSelf.source = newSource;
-                if (weakSelf.deleteSourceBlock) weakSelf.deleteSourceBlock(deleteObj, weakSelf.source);
-                if (weakSelf.type == FPImageTypeSelectImageOrVideo && weakSelf.source.count == 0) {
-                    weakSelf.type = weakSelf.type;
-                }
-                [weakSelf.collectionView reloadData];
-            };
             id obj = self.source[indexPath.item];
             if ([obj isKindOfClass:[UIImage class]]) {
                 imgCell.imgView.image = (UIImage*)obj;
             }else if ([obj isKindOfClass:[NSString class]]){
                 //网络加载
-                [imgCell.imgView sd_setImageWithURL:[NSURL URLWithString:self.source[indexPath.item]] placeholderImage:self.placeholderImage];
+                [self loadNetingImage:imgCell.imgView url:[NSURL URLWithString:obj] placeholderImage:self.placeholderImage];
             }
         }
         cell = imgCell;
@@ -239,22 +227,11 @@ static void *contentSizeContext = &contentSizeContext;
             imgCell.playBtn.hidden = NO;
             imgCell.deleteBtn.hidden = NO;
             [imgCell.playBtn setImage:self.playImage forState:UIControlStateNormal];
-            imgCell.deleteBlock = ^(id  _Nonnull object) {
-                id deleteObj = weakSelf.source[indexPath.item];
-                [weakSelf.source removeObjectAtIndex:indexPath.item];
-                NSMutableArray *newSource = [NSMutableArray arrayWithArray:weakSelf.source];
-                weakSelf.source = newSource;
-                if (weakSelf.deleteSourceBlock) weakSelf.deleteSourceBlock(deleteObj, weakSelf.source);
-                if (weakSelf.type == FPImageTypeSelectImageOrVideo && weakSelf.source.count == 0) {
-                    weakSelf.type = weakSelf.type;
-                }
-                [weakSelf.collectionView reloadData];
-            };
             FPVideoItem *videoItem = self.source[indexPath.item];
             if (videoItem.coverImage) {
                 imgCell.imgView.image = videoItem.coverImage;
             }else{
-                [imgCell.imgView sd_setImageWithURL:[NSURL URLWithString:videoItem.coverUrl] placeholderImage:self.placeholderImage];
+                [self loadNetingImage:imgCell.imgView url:[NSURL URLWithString:videoItem.coverUrl] placeholderImage:self.placeholderImage];
             }
         }
         cell = imgCell;
@@ -267,7 +244,7 @@ static void *contentSizeContext = &contentSizeContext;
         if (videoItem.coverImage) {
             imgCell.imgView.image = videoItem.coverImage;
         }else{
-            [imgCell.imgView sd_setImageWithURL:[NSURL URLWithString:videoItem.coverUrl] placeholderImage:self.placeholderImage];
+            [self loadNetingImage:imgCell.imgView url:[NSURL URLWithString:videoItem.coverUrl] placeholderImage:self.placeholderImage];
         }
         cell = imgCell;
     }else if (self.interType == FPImageTypeSelectImageOrVideo){
@@ -283,7 +260,7 @@ static void *contentSizeContext = &contentSizeContext;
             if (videoItem.coverImage) {
                 imgCell.imgView.image = videoItem.coverImage;
             }else{
-                [imgCell.imgView sd_setImageWithURL:[NSURL URLWithString:videoItem.coverUrl] placeholderImage:self.placeholderImage];
+                [self loadNetingImage:imgCell.imgView url:[NSURL URLWithString:videoItem.coverUrl] placeholderImage:self.placeholderImage];
             }
         }
         cell = imgCell;
@@ -301,18 +278,10 @@ static void *contentSizeContext = &contentSizeContext;
                 imgCell.playBtn.hidden = NO;
                 [imgCell.playBtn setImage:self.playImage forState:UIControlStateNormal];
                 FPVideoItem *videoItem = self.source[indexPath.item];
-                imgCell.deleteBlock = ^(id  _Nonnull object) {
-                    id deleteObj = weakSelf.source[indexPath.item];
-                    [weakSelf.source removeObjectAtIndex:indexPath.item];
-                    NSMutableArray *newSource = [NSMutableArray arrayWithArray:weakSelf.source];
-                    weakSelf.source = newSource;
-                    if (weakSelf.deleteSourceBlock) weakSelf.deleteSourceBlock(deleteObj, weakSelf.source);
-                    [weakSelf.collectionView reloadData];
-                };
                 if (videoItem.coverImage) {
                     imgCell.imgView.image = videoItem.coverImage;
                 }else{
-                    [imgCell.imgView sd_setImageWithURL:[NSURL URLWithString:videoItem.coverUrl] placeholderImage:self.placeholderImage];
+                    [self loadNetingImage:imgCell.imgView url:[NSURL URLWithString:videoItem.coverUrl] placeholderImage:self.placeholderImage];
                 }
             }else{//图片
                 [imgCell.deleteBtn setImage:self.deleteImage forState:UIControlStateNormal];
@@ -322,19 +291,18 @@ static void *contentSizeContext = &contentSizeContext;
                     [weakSelf.source removeObjectAtIndex:indexPath.item];
                     NSMutableArray *newSource = [NSMutableArray arrayWithArray:weakSelf.source];
                     weakSelf.source = newSource;
-                    if (weakSelf.deleteSourceBlock) weakSelf.deleteSourceBlock(deleteObj, weakSelf.source);
+                    if (weakSelf.deleteSourceBlock) weakSelf.deleteSourceBlock(deleteObj, indexPath,weakSelf);
                     [weakSelf.collectionView reloadData];
                 };
                 if ([source isKindOfClass:[UIImage class]]) {
                     imgCell.imgView.image = (UIImage*)source;
                 }else if ([source isKindOfClass:[NSString class]]){
                     //网络加载
-                    [imgCell.imgView sd_setImageWithURL:[NSURL URLWithString:source] placeholderImage:self.placeholderImage];
+                    [self loadNetingImage:imgCell.imgView url:[NSURL URLWithString:source] placeholderImage:self.placeholderImage];
                 }
             }
         }
         cell = imgCell;
-        
     }else if (self.interType == FPImageTypeShowImageAndVideo){
         FPImageCCell *imgCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"FPImageCCell" forIndexPath:indexPath];
         imgCell.deleteBtn.hidden = YES;
@@ -346,7 +314,7 @@ static void *contentSizeContext = &contentSizeContext;
             if (videoItem.coverImage) {
                 imgCell.imgView.image = videoItem.coverImage;
             }else{
-                [imgCell.imgView sd_setImageWithURL:[NSURL URLWithString:videoItem.coverUrl] placeholderImage:self.placeholderImage];
+                [self loadNetingImage:imgCell.imgView url:[NSURL URLWithString:videoItem.coverUrl] placeholderImage:self.placeholderImage];
             }
         }else{//图片
             [imgCell.deleteBtn setImage:self.deleteImage forState:UIControlStateNormal];
@@ -354,20 +322,38 @@ static void *contentSizeContext = &contentSizeContext;
             if ([source isKindOfClass:[UIImage class]]) {
                 imgCell.imgView.image = (UIImage*)source;
             }else if ([source isKindOfClass:[NSString class]]){
-                //网络加载
-                [imgCell.imgView sd_setImageWithURL:[NSURL URLWithString:source] placeholderImage:self.placeholderImage];
+                [self loadNetingImage:imgCell.imgView url:[NSURL URLWithString:source] placeholderImage:self.placeholderImage];
             }
         }
         cell = imgCell;
-        
     }
     if (self.cornerRadius > 0) {
         cell.layer.cornerRadius = self.cornerRadius;
         cell.layer.masksToBounds = YES;
     }
     if (self.configureCell) self.configureCell((FPImageCCell*)cell, indexPath,self.source);
-    
+    cell.deleteBlock = ^(id  _Nonnull object) {
+        [weakSelf deleteObject:indexPath];
+    };
     return cell;
+}
+- (void)loadNetingImage:(UIImageView*)imgView url:(NSURL*)URL placeholderImage:(UIImage*)placeholderImage{
+    if (self.loadNetworkImageBlock) {
+        self.loadNetworkImageBlock(imgView, URL,placeholderImage);
+    }else{
+//        [imgView sd_setImageWithURL:URL placeholderImage:placeholderImage];
+    }
+}
+- (void)deleteObject:(NSIndexPath*)indexPath{
+    id deleteObj = self.source[indexPath.item];
+    [self.source removeObjectAtIndex:indexPath.item];
+    NSMutableArray *newSource = [NSMutableArray arrayWithArray:self.source];
+    self.source = newSource;
+    if (self.deleteSourceBlock) self.deleteSourceBlock(deleteObj,indexPath, self);
+    if (self.type == FPImageTypeSelectImageOrVideo && self.source.count == 0) {
+        self.type = self.type;
+    }
+    [self.collectionView reloadData];
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.item >= self.source.count) {//添加
@@ -454,25 +440,25 @@ static void *contentSizeContext = &contentSizeContext;
             if (self.tapImageBlock) {
                 self.tapImageBlock(self.source[indexPath.item], [collectionView cellForItemAtIndexPath:indexPath],indexPath,self.source);
             }else{
-//                NSMutableArray *images = [NSMutableArray array];
-//              __block NSInteger currentPage = 0;
-//                [self.source enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//                    if (![obj isKindOfClass:[FPVideoItem class]]) {
-//                        YBIBImageData *data = [YBIBImageData new];
-//                        if ([obj isKindOfClass:[UIImage class]]) {
-//                            data.image  = ^__kindof UIImage * _Nullable{return obj;};
-//                        }else{
-//                            data.imageURL = [NSURL URLWithString:obj];
-//                        }
-//                        data.projectiveView = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:idx inSection:0]];
-//                        if (idx == indexPath.item) currentPage = images.count;
-//                        [images addObject:data];
-//                    }
-//                }];
-//                YBImageBrowser *browser = [YBImageBrowser new];
-//                browser.dataSourceArray = images;
-//                browser.currentPage = currentPage;
-//                [browser show];
+                //                NSMutableArray *images = [NSMutableArray array];
+                //              __block NSInteger currentPage = 0;
+                //                [self.source enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                //                    if (![obj isKindOfClass:[FPVideoItem class]]) {
+                //                        YBIBImageData *data = [YBIBImageData new];
+                //                        if ([obj isKindOfClass:[UIImage class]]) {
+                //                            data.image  = ^__kindof UIImage * _Nullable{return obj;};
+                //                        }else{
+                //                            data.imageURL = [NSURL URLWithString:obj];
+                //                        }
+                //                        data.projectiveView = [collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:idx inSection:0]];
+                //                        if (idx == indexPath.item) currentPage = images.count;
+                //                        [images addObject:data];
+                //                    }
+                //                }];
+                //                YBImageBrowser *browser = [YBImageBrowser new];
+                //                browser.dataSourceArray = images;
+                //                browser.currentPage = currentPage;
+                //                [browser show];
             }
         }
     }

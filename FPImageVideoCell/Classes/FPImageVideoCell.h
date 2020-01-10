@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 //选择视频时当maxVideoCount=1的时候，是否自动计算视频的尺寸
 @property (nonatomic,assign)BOOL automaticConfiureVideoSize;
 @property (nonatomic,assign)CGFloat cellHeight;//实际高度 布局完之后才有值
-@property (nonatomic,strong)NSMutableArray *source;//UIImage Or Url  Or FPVideoItem
+@property (nonatomic,strong)NSMutableArray *source;//UIImage Or UrlString  Or FPVideoItem
 
 @property (nonatomic,strong,readonly)NSMutableArray <FPVideoItem *> *videoSource;
 @property (nonatomic,strong,readonly)NSMutableArray  *imageSource;
@@ -56,8 +56,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 //Observer Block
 @property (nonatomic,copy)void (^heightChangeBlock)(CGFloat height,NSArray *source);
-@property (nonatomic,copy)void (^deleteSourceBlock)(NSArray* deleteSource,NSArray *source);
-
+@property (nonatomic,copy)void (^deleteSourceBlock)(id deleteObject,NSIndexPath * indexPath,FPImageVideoCell *cell);
+@property (nonatomic,copy)void (^loadNetworkImageBlock)(UIImageView *imageView,NSURL *url,UIImage* placeholderImage);
 //custom tap event
 @property (nonatomic,copy)void (^tapAddSourceBlock)(FPImageType type,NSInteger leaveImageMaxCount,NSInteger leaveVideoMaxCount,void(^injectBlock)(NSArray <UIImage *>  * _Nullable images,NSArray <PHAsset *> * _Nullable assets));
 @property (nonatomic,copy)void (^tapImageBlock)(id obj,UICollectionViewCell *cell,NSIndexPath *indexPath,NSMutableArray *source);
