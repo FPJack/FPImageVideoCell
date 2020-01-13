@@ -56,8 +56,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 //Observer Block
 @property (nonatomic,copy)void (^heightChangeBlock)(CGFloat height,NSArray *source);
-@property (nonatomic,copy)void (^deleteSourceBlock)(id deleteObject,NSIndexPath * indexPath,FPImageVideoCell *cell);
 
+//删除图片之前调用 callBackBlock回调是否允许删除操作
+@property (nonatomic,copy)void (^willDeleteSourceBlock)(id deleteObject,NSIndexPath * indexPath,FPImageVideoCell *cell,void(^callBackBlock)(BOOL allowDelete));
+//删除之后调用
+@property (nonatomic,copy)void (^deleteSourceBlock)(id deleteObject,NSIndexPath * indexPath,FPImageVideoCell *cell);
 
 //外部自行加载网络图片
 @property (nonatomic,copy)void (^loadNetworkImageBlock)(UIImageView *imageView,NSURL *url,UIImage* placeholderImage);

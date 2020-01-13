@@ -107,7 +107,19 @@
         default:
             break;
     }
+    cell.willDeleteSourceBlock = ^(id  _Nonnull deleteObject, NSIndexPath * _Nonnull indexPath, FPImageVideoCell * _Nonnull cell, void (^ _Nonnull callBackBlock)(BOOL)) {
+            UIAlertController *actionVC = [UIAlertController alertControllerWithTitle:@"确定删除" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *ac1 = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                callBackBlock(YES);
+            }];
+        UIAlertAction *ac2 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            }];
+            [actionVC addAction:ac1];
+            [actionVC addAction:ac2];
+            [self presentViewController:actionVC animated:YES completion:nil];
     
+    };
     cell.configureReusableView = ^(FPImageResuableView * _Nonnull resuableView, NSString * _Nonnull kind) {
         resuableView.imgWidthCon.constant = 0;
         resuableView.labLeftCon.constant = 0;

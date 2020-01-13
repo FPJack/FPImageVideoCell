@@ -332,8 +332,9 @@ static void *contentSizeContext = &contentSizeContext;
         cell.layer.masksToBounds = YES;
     }
     if (self.configureCell) self.configureCell((FPImageCCell*)cell, indexPath,self.source);
+    __weak typeof(cell) weakCell = cell;
     cell.deleteBlock = ^(id  _Nonnull object) {
-        [weakSelf deleteObject:indexPath];
+        [weakSelf deleteObject:indexPath cell:weakCell];
     };
     return cell;
 }
@@ -344,16 +345,32 @@ static void *contentSizeContext = &contentSizeContext;
 //        [imgView sd_setImageWithURL:URL placeholderImage:placeholderImage];
     }
 }
-- (void)deleteObject:(NSIndexPath*)indexPath{
+- (void)deleteObject:(NSIndexPath*)indexPath cell:(UICollectionViewCell*)cell{
     id deleteObj = self.source[indexPath.item];
-    [self.source removeObjectAtIndex:indexPath.item];
-    NSMutableArray *newSource = [NSMutableArray arrayWithArray:self.source];
-    self.source = newSource;
-    if (self.deleteSourceBlock) self.deleteSourceBlock(deleteObj,indexPath, self);
-    if (self.type == FPImageTypeSelectImageOrVideo && self.source.count == 0) {
-        self.type = self.type;
+    __weak typeof(self) weakSelf = self;
+    if (self.willDeleteSourceBlock) {
+        self.willDeleteSourceBlock(deleteObj, indexPath, cell, ^(BOOL allowDelete) {
+            if (allowDelete) {
+                [weakSelf.source removeObjectAtIndex:indexPath.item];
+                   NSMutableArray *newSource = [NSMutableArray arrayWithArray:weakSelf.source];
+                   weakSelf.source = newSource;
+                   if (weakSelf.deleteSourceBlock) weakSelf.deleteSourceBlock(deleteObj,indexPath, self);
+                   if (weakSelf.type == FPImageTypeSelectImageOrVideo && weakSelf.source.count == 0) {
+                       weakSelf.type = weakSelf.type;
+                   }
+                   [weakSelf .collectionView reloadData];
+            }
+        });
+    }else{
+        [weakSelf.source removeObjectAtIndex:indexPath.item];
+           NSMutableArray *newSource = [NSMutableArray arrayWithArray:weakSelf.source];
+           weakSelf.source = newSource;
+           if (weakSelf.deleteSourceBlock) weakSelf.deleteSourceBlock(deleteObj,indexPath, self);
+           if (weakSelf.type == FPImageTypeSelectImageOrVideo && weakSelf.source.count == 0) {
+               weakSelf.type = weakSelf.type;
+           }
+           [weakSelf .collectionView reloadData];
     }
-    [self.collectionView reloadData];
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.item >= self.source.count) {//添加
