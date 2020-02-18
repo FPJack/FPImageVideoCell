@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger, FPImageType) {
 };
 NS_ASSUME_NONNULL_BEGIN
 @interface FPImageVideoCell : UITableViewCell
+@property (strong, nonatomic,readonly)UICollectionView *collectionView;
 @property (nonatomic,assign)UIEdgeInsets sectionInset;
 @property (nonatomic,assign)CGFloat minimumLineSpacing;
 @property (nonatomic,assign)CGFloat minimumInteritemSpacing;

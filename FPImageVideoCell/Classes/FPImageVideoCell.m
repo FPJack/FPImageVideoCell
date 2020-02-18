@@ -12,7 +12,7 @@ static void *contentSizeContext = &contentSizeContext;
 @interface FPImageVideoCell()<UICollectionViewDelegateFlowLayout,UICollectionViewDelegate,UICollectionViewDataSource>
 @property (nonatomic,assign)FPImageType interType;
 @property (nonatomic,strong)NSBundle *bundle;
-@property (strong, nonatomic)UICollectionView *collectionView;
+@property (strong, nonatomic,readwrite)UICollectionView *collectionView;
 @property (nonatomic,strong)NSLayoutConstraint *heightConstraint;
 @end
 @implementation FPImageVideoCell
